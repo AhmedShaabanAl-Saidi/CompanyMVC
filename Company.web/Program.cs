@@ -1,4 +1,8 @@
 using Company.data.Contexts;
+using Company.repository.Interfaces;
+using Company.repository.Repositories;
+using Company.service.Interfaces;
+using Company.service.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Company.web
@@ -16,6 +20,10 @@ namespace Company.web
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            // Add services to the container.
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
             var app = builder.Build();
 
