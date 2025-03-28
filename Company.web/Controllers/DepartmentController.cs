@@ -1,6 +1,5 @@
-﻿using Company.data.Models;
-using Company.repository.Interfaces;
-using Company.service.Interfaces;
+﻿using Company.service.Interfaces;
+using Company.service.Interfaces.Department.Dto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.web.Controllers
@@ -29,13 +28,17 @@ namespace Company.web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Department department)
+        public IActionResult Create(DepartmentDto department)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     _departmentService.Add(department);
+
+                    //TempData["Message"] = "Department added successfully";
+                    //TempData.Keep("Message");
+
                     return RedirectToAction("Index");
                 }
 
@@ -66,7 +69,7 @@ namespace Company.web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(int? id , Department department)
+        public IActionResult Update(int? id , DepartmentDto department)
         {
             if(department.Id != id.Value)
                 return RedirectToAction("NotFoundPage", null, "Home");

@@ -14,16 +14,10 @@ namespace Company.repository.Repositories
         }
 
         public void Add(T entity)
-        {
-            _companyDbContext.Add(entity);
-            _companyDbContext.SaveChanges();
-        }
+           => _companyDbContext.Add(entity);
 
         public void Delete(T entity)
-        {
-            _companyDbContext.Remove(entity);
-            _companyDbContext.SaveChanges();
-        }
+          =>  _companyDbContext.Remove(entity);
 
         public IEnumerable<T> GetAll()
          => _companyDbContext.Set<T>().ToList();
@@ -32,9 +26,6 @@ namespace Company.repository.Repositories
         => _companyDbContext.Set<T>().Find(id);
 
         public void Update(T entity)
-        {
-            _companyDbContext.Update(entity);
-            _companyDbContext.SaveChanges();
-        }
+           => _companyDbContext.Update(entity);
     }
 }

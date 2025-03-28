@@ -4,7 +4,7 @@ using Company.repository.Interfaces;
 
 namespace Company.repository.Repositories
 {
-    public class EmpolyeeRepository : GenericRepository<Employee> , IEmpolyeeRepository
+    public class EmpolyeeRepository : GenericRepository<Employee>, IEmpolyeeRepository
     {
         private readonly CompanyDbContext _companyDbContext;
         public EmpolyeeRepository(CompanyDbContext companyDbContext) : base(companyDbContext)
@@ -12,10 +12,13 @@ namespace Company.repository.Repositories
             _companyDbContext = companyDbContext;
         }
 
-        public Employee GetEmployeeByName(string name)
-        => _companyDbContext.Employees.Find(name);
+        public IEnumerable<Employee> GetEmployeeByName(string name)
+        => _companyDbContext.Employees.Where(x =>
+        x.Name.Trim().ToLower().Contains(name.Trim().ToLower()) ||
+        x.Email.Trim().ToLower().Contains(name.Trim().ToLower()) ||
+        x.PhoneNumber.Trim().ToLower().Contains(name.Trim().ToLower())).ToList();
 
         public IEnumerable<Employee> GetEmployeesByAddress(string address)
-        => _companyDbContext.Employees.Where(e => e.Address == address).ToList();
+        => _companyDbContext.Employees.Where(x => x.Address.Trim().ToLower().Contains(address.Trim().ToLower())).ToList();
     }
 }

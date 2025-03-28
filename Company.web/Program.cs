@@ -2,6 +2,7 @@ using Company.data.Contexts;
 using Company.repository.Interfaces;
 using Company.repository.Repositories;
 using Company.service.Interfaces;
+using Company.service.Mapping;
 using Company.service.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,8 +23,13 @@ namespace Company.web
             });
 
             // Add services to the container.
-            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            //builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            builder.Services.AddAutoMapper(x => x.AddProfile(new EmployeeProfile()));
+            builder.Services.AddAutoMapper(x => x.AddProfile(new DepartmentProfile()));
 
             var app = builder.Build();
 
