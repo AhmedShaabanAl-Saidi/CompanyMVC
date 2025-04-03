@@ -40,6 +40,7 @@ namespace Company.web
                 config.Password.RequireLowercase = true;
                 config.Password.RequireUppercase = true;
                 config.Password.RequireNonAlphanumeric = true;
+                config.Password.RequiredLength = 6;
                 config.User.RequireUniqueEmail = true;
                 config.Lockout.AllowedForNewUsers = true;
                 config.Lockout.MaxFailedAccessAttempts = 3;
@@ -81,7 +82,7 @@ namespace Company.web
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=SignUp}");
 
             app.Run();
         }
