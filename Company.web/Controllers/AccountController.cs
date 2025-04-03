@@ -1,4 +1,5 @@
 ﻿using Company.data.Models;
+using Company.service.Helper;
 using Company.web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -82,6 +83,47 @@ namespace Company.web.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login");
+        }
+
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordViewModel input)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(input.Email);
+
+                if (user is not null)
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                    var url = Url.Action("ResetPassword", "Account", new { email = input.Email, token }, Request.Scheme);
+
+                    var email = new Email
+                    {
+                        To = input.Email,
+                        Subject = "Reset Password",
+                        Body = url
+                    };
+
+                    EmailSettings.SendEmail(email);
+
+                    return RedirectToAction("CheckYouInbox");
+                }
+                else
+                    ModelState.AddModelError(string.Empty, "Invalid email address.");
+            }
+
+            return View(input);
+        }
+
+        public IActionResult CheckYouInbox()
+        {
+            return View();
         }
     }
 }
