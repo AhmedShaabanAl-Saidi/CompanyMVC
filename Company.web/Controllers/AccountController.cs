@@ -77,5 +77,11 @@ namespace Company.web.Controllers
             }
             return View(input);
         }
+
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login");
+        }
     }
 }
